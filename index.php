@@ -31,7 +31,7 @@ class SearchNumber {
     }
 }
 
-$num = $_GET['number'];
+$num = array_key_exists('number', $_GET) && $_GET['number']? $_GET['number']:0;
 
 $search = new SearchNumber();
 $search->search($num);
