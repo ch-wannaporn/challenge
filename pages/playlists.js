@@ -20,19 +20,30 @@ const Playlists = (props) => {
             params: { id: id, name: playlist }
         };
 
-        const res = await axios(options)
-        console.log(res.data)
+        const res = await axios(options);
+        const log = await res.data;
+        console.log(log)
     }
 
-    const selectPlaylist = (i) => {
+    const selectPlaylist = async (i) => {
         setCurrentPlaylist(playlists[i])
+
+        const options = {
+            method: 'POST',
+            url: 'http://localhost:3000/api/gettracks',
+            params: { playlist: playlists[i].id }
+        };
+
+        const res = await axios.request(options);
+        const tracks = await res.data;
+        setCurrentTracks(tracks)
     }
 
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
-            <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap px-8 py-8 overflow-y-auto">
-                <Title current={currentPlaylist} />
+            <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap gap-y-8 px-8 py-8 overflow-y-auto">
+                <Title current={currentPlaylist} total={currentTracks.length} />
                 <TrackList tracks={currentTracks} />
             </div>
         </div>
