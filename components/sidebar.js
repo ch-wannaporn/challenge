@@ -14,9 +14,9 @@ const Sidebar = (props) => {
                 </h1>
                 <hr className="mb-8" />
                 <ul>
-                    {props.playlists.map(item => <li className="text-purple-50 font-semibold text-md cursor-pointer my-4 hover:text-gray-300" key={item.id}>{item.name}</li>)}
-                    <li key="add-btn">
-                        <div className="flex flex-row text-md">
+                    {props.playlists.map((item, index) => <li className="text-purple-50 font-semibold text-md cursor-pointer my-4 hover:text-gray-300" key={item.id} index={index} onClick={e => props.selectplaylist(e.target.attributes.index.value)}>{item.name}</li>)}
+                    <li key="add">
+                        <div className="flex flex-row text-md mt-4">
                             <input className="flex-grow w-full rounded mr-0.5 bg-purple-50 focus:outline-none px-2 py-1" placeholder="New Playlist" value={playlist} onChange={e => setPlaylist(e.target.value)}/>
                             <button className="inline-flex justify-center text-white bg-purple-400 hover:bg-purple-300 px-2 py-1 rounded" onClick={e => {
                                 playlist? props.addplaylist(playlist):null
