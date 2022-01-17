@@ -10,6 +10,7 @@ const Playlists = (props) => {
     const [playlists, setPlaylists] = useState(props.playlists)
     const [currentPlaylist, setCurrentPlaylist] = useState(props.playlists[0])
     const [currentTracks, setCurrentTracks] = useState(props.tracks)
+    const [searchOptions, setSearchOptions] = useState([])
 
     const addPlaylist = async (playlist) => {
         const id = playlists[playlists.length - 1].id + 1
@@ -39,12 +40,27 @@ const Playlists = (props) => {
         setCurrentTracks(tracks)
     }
 
+    const deleteTrack = async (item) => {
+        if(confirm('Do you want to remove this song from playlist?')) {
+            setCurrentTracks(currentTracks.filter(i => i.id !== item.id))
+            const options = {
+                method: 'GET',
+                url: 'http://localhost:3000/api/deletetrack',
+                params: { track: item.id }
+            };
+    
+            const res = await axios.request(options);
+            const log = await res.data;
+            console.log(log)
+        }
+    }
+
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
             <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap gap-y-8 px-8 py-8 overflow-y-auto">
                 <Title current={currentPlaylist} total={currentTracks.length} />
-                <TrackList tracks={currentTracks} />
+                <TrackList tracks={currentTracks} deletetrack={deleteTrack} />
             </div>
         </div>
     </div>);
