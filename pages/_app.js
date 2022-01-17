@@ -1,12 +1,7 @@
-import {AppWrapper} from '../context/app'
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <AppWrapper>
-      <Component {...pageProps} />
-    </AppWrapper>
-  )
+  return (<Component {...pageProps} />)
 }
 
 export default MyApp
