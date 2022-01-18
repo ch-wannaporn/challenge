@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useForceUpdate } from "react";
 import dynamic from "next/dynamic";
 import axios from "axios";
 
@@ -55,11 +55,19 @@ const Playlists = (props) => {
         }
     }
 
+    const updateCurrentPlaylistName = (name) => {
+        // setPlaylists([...playlists, {id:currentPlaylist.id, name: name, img: currentPlaylist.img}])
+        const index = playlists.findIndex(item => item.id === currentPlaylist.id)
+        var p = [...playlists]
+        p[index].name = name
+        setPlaylists(p)
+    }
+
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
             <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap gap-y-8 px-8 py-8 overflow-y-auto">
-                <Title current={currentPlaylist} total={currentTracks.length} />
+                <Title current={currentPlaylist} total={currentTracks.length} setcurrentname={updateCurrentPlaylistName}/>
                 <TrackList tracks={currentTracks} deletetrack={deleteTrack} />
             </div>
         </div>
