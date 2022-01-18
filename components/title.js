@@ -28,7 +28,7 @@ const Title = (props) => {
                 contentEditable
                 suppressContentEditableWarning={true}
                 onBlur={e => props.setcurrentname(e.target.innerHTML)}>{props.current.name}</h1>
-            <h3 className="w-full text-xl text-gray-500">Total {props.total} track(s)</h3>
+            <h3 className="w-full text-xl text-gray-500 inline-flex items-center"><span>Total {props.total} track(s)</span><button onClick={e => props.deleteplaylist()} className="bg-gray-400 hover:bg-gray-500 text-white py-1 px-2 text-sm rounded ml-2">Delete this playlist</button></h3>
             <div className="w-full inline-flex">
                 <Select
                     id="select-song" instanceId="select-song"

@@ -149,6 +149,23 @@ const Playlists = (props) => {
         setCurrentTracks([...currentTracks, params])
     }
 
+    const deletePlaylist = async () => {
+        if(confirm('Do you want to delete this playlist?')) {
+            const options = {
+                method: 'GET',
+                url: 'http://localhost:3000/api/deleteplaylist',
+                params: { playlist: currentPlaylist.id }
+            };
+    
+            const res = await axios.request(options);
+            const log = await res.data;
+            console.log(log)
+
+            setPlaylists(playlists.filter(i => i.id !== currentPlaylist.id))
+            selectPlaylist(0)
+        }
+    }
+
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
@@ -160,7 +177,8 @@ const Playlists = (props) => {
                     setcurrentimg={updateCurrentPlaylistImg} 
                     options={searchOptions}
                     searchtracks={searchTracks}
-                    addtrack={addTrack}/>
+                    addtrack={addTrack}
+                    deleteplaylist={deletePlaylist}/>
                 <TrackList tracks={currentTracks} deletetrack={deleteTrack}/>
             </div>
         </div>
