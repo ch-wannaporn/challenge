@@ -1,11 +1,14 @@
+import ReactTooltip from "react-tooltip";
+
 const Title = (props) => {
     return (<div className="inline-flex justify-center gap-x-12 h-fit">
-        <div className="flex-none shadow-lg text-center rounded-lg overflow-hidden w-48 mx-auto">
-            <img className="object-cover h-48 w-full"
+        <div className="flex-none shadow-lg text-center rounded-lg overflow-hidden w-48 mx-auto" data-tip="Edit image">
+            <img className="object-cover h-48 w-full cursor-pointer hover:brightness-90"
                 src={props.current.img ? props.current.img : "/playlist_profile.jpg"} />
         </div>
+        <ReactTooltip />
         <div className="flex flex-row flex-wrap items-end h-48">
-            <h1 className="w-full text-6xl font-medium text-gray-600 inline-flex items-end decoration-2 underline-offset-2 hover:underline focus:outline-none" 
+            <h1 className="w-full text-6xl font-medium text-gray-600 inline-flex items-end decoration-2 underline-offset-2 hover:underline focus:outline-none"
                 contentEditable
                 suppressContentEditableWarning={true}
                 onBlur={e => props.setcurrentname(e.target.innerHTML)}>{props.current.name}</h1>

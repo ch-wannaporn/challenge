@@ -55,12 +55,21 @@ const Playlists = (props) => {
         }
     }
 
-    const updateCurrentPlaylistName = (name) => {
-        // setPlaylists([...playlists, {id:currentPlaylist.id, name: name, img: currentPlaylist.img}])
+    const updateCurrentPlaylistName = async (name) => {
         const index = playlists.findIndex(item => item.id === currentPlaylist.id)
         var p = [...playlists]
         p[index].name = name
         setPlaylists(p)
+
+        const options = {
+            method: 'GET',
+            url: 'http://localhost:3000/api/editplaylist',
+            params: { id: currentPlaylist.id, name: name, img: currentPlaylist.img }
+        };
+
+        const res = await axios.request(options);
+        const log = await res.data;
+        console.log(log)
     }
 
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
