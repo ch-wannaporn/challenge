@@ -93,12 +93,75 @@ const Playlists = (props) => {
         setPlaylists(p)
     }
 
+    const searchTracks = async (val) => {
+        var options = {
+            method: 'GET',
+            url: 'https://deezerdevs-deezer.p.rapidapi.com/search',
+            params: {q: val},
+            headers: {
+              'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com',
+              'x-rapidapi-key': '023fdb6801msh416efa25372a335p1652c5jsnd2524ecd67e6'
+            }
+          };
+          
+          const res = await axios.request(options)
+          const songs = await res.data.data
+          const opt = songs? songs.map(item => {
+              return { value: item.id, label: item.title + " - " + item.artist.name }
+          }): []
+
+          setSearchOptions(opt)
+    }
+
+    const addTrack = async (track) => {
+        var options = {
+            method: 'GET',
+            url: 'https://deezerdevs-deezer.p.rapidapi.com/track/' + track.value,
+            headers: {
+              'x-rapidapi-host': 'deezerdevs-deezer.p.rapidapi.com',
+              'x-rapidapi-key': '023fdb6801msh416efa25372a335p1652c5jsnd2524ecd67e6'
+            }
+          };
+          
+        const res = await axios.request(options)
+        const song = await res.data
+
+        const params = {
+            id: null, 
+            name: song.title, 
+            album: song.album.title,
+            artist: song.artist.name,
+            preview: song.preview,
+            img: song.album.cover,
+            playlist: currentPlaylist.id }
+
+        options = {
+            method: 'POST',
+            url: 'http://localhost:3000/api/addtrack',
+            params: params
+        };
+
+        res = await axios(options);
+        const log = await res.data;
+        console.log(log)
+
+        params.id = log.insertId
+        setCurrentTracks([...currentTracks, params])
+    }
+
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
             <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap gap-y-8 px-8 py-8 overflow-y-auto">
-                <Title current={currentPlaylist} total={currentTracks.length} setcurrentname={updateCurrentPlaylistName} setcurrentimg={updateCurrentPlaylistImg}/>
-                <TrackList tracks={currentTracks} deletetrack={deleteTrack} />
+                <Title 
+                    current={currentPlaylist} 
+                    total={currentTracks.length} 
+                    setcurrentname={updateCurrentPlaylistName} 
+                    setcurrentimg={updateCurrentPlaylistImg} 
+                    options={searchOptions}
+                    searchtracks={searchTracks}
+                    addtrack={addTrack}/>
+                <TrackList tracks={currentTracks} deletetrack={deleteTrack}/>
             </div>
         </div>
     </div>);
@@ -124,5 +187,5 @@ export async function getServerSideProps() {
     res = await axios.request(options);
     const tracks = await res.data;
 
-    return { props: { playlists: playlists, tracks: tracks } }
+    return { props: { playlists: playlists, tracks: tracks} }
 }

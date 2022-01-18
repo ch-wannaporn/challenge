@@ -1,6 +1,7 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Select from 'react-select';
 
 const ReactTooltip = dynamic(() => import("react-tooltip"), {
     ssr: false
@@ -8,13 +9,14 @@ const ReactTooltip = dynamic(() => import("react-tooltip"), {
 
 const Title = (props) => {
     const file = useRef(null);
+    const [track, setTrack] = useState(null);
 
     return (<div className="inline-flex justify-center gap-x-12 h-fit">
         <div className="relative flex-none shadow-lg text-center rounded-lg overflow-hidden w-48 mx-auto" data-tip="Edit image">
             <Image className="object-cover h-48 w-full cursor-pointer hover:brightness-90"
                 src={props.current.img ? "/uploads/" + props.current.img : "/playlist_profile.jpg"}
-                onClick={e => file.current.click()} 
-                layout="fill" priority="false"/>
+                onClick={e => file.current.click()}
+                layout="fill" priority="false" />
             <input type="file" id="file" name="file" accept="image/*" ref={file} className="hidden" onChange={e => {
                 props.setcurrentimg(e.target.files[0]);
                 file.current.value = null;
@@ -28,8 +30,19 @@ const Title = (props) => {
                 onBlur={e => props.setcurrentname(e.target.innerHTML)}>{props.current.name}</h1>
             <h3 className="w-full text-xl text-gray-500">Total {props.total} track(s)</h3>
             <div className="w-full inline-flex">
-                <input className="w-full border border-gray-300 rounded-l-md py-2 px-4 focus:outline-none" placeholder="Search..." />
-                <button className="flex-none bg-green-500 hover:bg-green-600 border border-green-500 text-white rounded-md rounded-l-none py-2 px-4">Add track</button>
+                <Select
+                    id="select-song" instanceId="select-song"
+                    options={props.options} className="w-full"
+                    onInputChange={val => { props.searchtracks(val) }}
+                    styles={{
+                        menuList: base => ({
+                            ...base,
+                            maxHeight: "12rem"
+                        })
+                    }}
+                    onChange={val => {setTrack(val)}}
+                    isClearable="true" />
+                <button className="flex-none bg-green-500 hover:bg-green-600 border border-green-500 text-white rounded-md px-2 ml-1" onClick={e => props.addtrack(track)}>Add track</button>
             </div>
         </div>
     </div>)
