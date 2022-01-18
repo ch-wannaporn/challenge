@@ -13,7 +13,7 @@ const Title = (props) => {
             <img className="object-cover h-48 w-full cursor-pointer hover:brightness-90"
                 src={props.current.img ? props.current.img : "/playlist_profile.jpg"} 
                 onClick={e => file.current.click()} />
-            <input type="file" id="file" accept="image/*" ref={file} className="hidden" onChange={e => {
+            <input type="file" id="file" name="file" accept="image/*" ref={file} className="hidden" onChange={e => {
                 props.setcurrentimg(e.target.files[0]);
                 file.current.value = null;
             }}/>

@@ -75,11 +75,13 @@ const Playlists = (props) => {
     const updateCurrentPlaylistImg = async (file) => {
         var formData = new FormData()
         formData.append('file', file)
+        formData.append('id', currentPlaylist.id)
 
         const options = {
             method: 'POST',
-            url: 'http://localhost:3000/api/editplaylistimg',
-            params: { id: currentPlaylist.id, form: formData}
+            url: 'http://localhost:3000/api/uploadimg',
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
         };
 
         const res = await axios.request(options);
