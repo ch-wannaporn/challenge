@@ -1,22 +1,24 @@
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 
 const ReactTooltip = dynamic(() => import("react-tooltip"), {
-  ssr: false
+    ssr: false
 });
 
 const Title = (props) => {
     const file = useRef(null);
 
     return (<div className="inline-flex justify-center gap-x-12 h-fit">
-        <div className="flex-none shadow-lg text-center rounded-lg overflow-hidden w-48 mx-auto" data-tip="Edit image">
-            <img className="object-cover h-48 w-full cursor-pointer hover:brightness-90"
-                src={props.current.img ? props.current.img : "/playlist_profile.jpg"} 
-                onClick={e => file.current.click()} />
+        <div className="relative flex-none shadow-lg text-center rounded-lg overflow-hidden w-48 mx-auto" data-tip="Edit image">
+            <Image className="object-cover h-48 w-full cursor-pointer hover:brightness-90"
+                src={props.current.img ? "/uploads/" + props.current.img : "/playlist_profile.jpg"}
+                onClick={e => file.current.click()} 
+                layout="fill" priority="false"/>
             <input type="file" id="file" name="file" accept="image/*" ref={file} className="hidden" onChange={e => {
                 props.setcurrentimg(e.target.files[0]);
                 file.current.value = null;
-            }}/>
+            }} />
         </div>
         <ReactTooltip />
         <div className="flex flex-row flex-wrap items-end h-48">

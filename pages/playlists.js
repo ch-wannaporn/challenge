@@ -85,8 +85,12 @@ const Playlists = (props) => {
         };
 
         const res = await axios.request(options);
-        const log = await res.data;
-        console.log(log)
+        const filepath = await res.data.filepath;
+
+        const index = playlists.findIndex(item => item.id === currentPlaylist.id)
+        var p = [...playlists]
+        p[index].img = filepath
+        setPlaylists(p)
     }
 
     return (<div className="h-screen bg-purple-100 flex justify-center items-center">
