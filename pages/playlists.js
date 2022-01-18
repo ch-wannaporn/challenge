@@ -62,9 +62,24 @@ const Playlists = (props) => {
         setPlaylists(p)
 
         const options = {
-            method: 'GET',
-            url: 'http://localhost:3000/api/editplaylist',
-            params: { id: currentPlaylist.id, name: name, img: currentPlaylist.img }
+            method: 'POST',
+            url: 'http://localhost:3000/api/editplaylistname',
+            params: { id: currentPlaylist.id, name: name}
+        };
+
+        const res = await axios.request(options);
+        const log = await res.data;
+        console.log(log)
+    }
+
+    const updateCurrentPlaylistImg = async (file) => {
+        var formData = new FormData()
+        formData.append('file', file)
+
+        const options = {
+            method: 'POST',
+            url: 'http://localhost:3000/api/editplaylistimg',
+            params: { id: currentPlaylist.id, form: formData}
         };
 
         const res = await axios.request(options);
@@ -76,7 +91,7 @@ const Playlists = (props) => {
         <div className="bg-white w-5/6 h-5/6 rounded-2xl shadow-2xl flex gap-x-8 px-8 py-8">
             <Sidebar playlists={playlists} addplaylist={addPlaylist} selectplaylist={selectPlaylist} />
             <div className="border-2 border-gray-500 w-5/6 h-full rounded-lg flex flex-row flex-wrap gap-y-8 px-8 py-8 overflow-y-auto">
-                <Title current={currentPlaylist} total={currentTracks.length} setcurrentname={updateCurrentPlaylistName}/>
+                <Title current={currentPlaylist} total={currentTracks.length} setcurrentname={updateCurrentPlaylistName} setcurrentimg={updateCurrentPlaylistImg}/>
                 <TrackList tracks={currentTracks} deletetrack={deleteTrack} />
             </div>
         </div>
