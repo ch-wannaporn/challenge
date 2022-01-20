@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Form = () => {
+const Form = (props) => {
     const [movie, setMovie] = useState('');
     const [showtime, setShowtime] = useState('')
     const [name, setName] = useState('') 
@@ -30,14 +30,14 @@ const Form = () => {
             <h1 className="text-4xl font-serif">Book now!</h1>
             <form className="mt-4 flex flex-row flex-wrap gap-4 font-serif text-gray-800">
                 <label className="text-xl">Movie</label>
-                <select className="w-full focus:outline-none border py-2 rounded-lg" value={movie} onChange={e => setMovie(e.target.value)}>
-                    <option disabled hidden selected value=''>Choose...</option>
-                    <option value="spiderman">Spiderman</option>
+                <select className="w-full focus:outline-none border py-2 rounded-lg" value={movie} onChange={e => {setMovie(e.target.value); setShowtime('')}}>
+                    <option disabled hidden value=''>Choose...</option>
+                    {props.movies.map(item => <option key={item} value={item}>{item}</option>)}
                 </select>
                 <label className="text-xl">Showtime</label>
                 <select className="w-full focus:outline-none border py-2 rounded-lg" value={showtime} onChange={e => setShowtime(e.target.value)}>
-                    <option disabled hidden selected value=''>Choose...</option>
-                    <option value="2pm">2PM</option>
+                    <option disabled hidden value=''>Choose...</option>
+                    {props.showtimes.filter(item => item.name === movie).map(item => <option key={item.showtime} value={item.showtime}>{item.showtime.substring(0, 5)}</option>)}
                 </select>
                 <label className="text-xl">Name</label>
                 <input className="w-full focus:outline-none border px-1 py-1 rounded-lg" placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
