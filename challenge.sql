@@ -85,7 +85,7 @@ ALTER TABLE `playlists`
 --
 ALTER TABLE `tracks`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `Unique Track` (`name`,`album`,`artist`),
+  ADD UNIQUE KEY `Unique Track` (`name`,`album`,`artist`,`playlist`),
   ADD KEY `Playlist FK` (`playlist`);
 
 --
